@@ -1,4 +1,4 @@
-interface BaiduFinancialNotesResult {
+export type BaiduFinancialNotesResult = {
   words_result: Array<{
     result: {
       [key: string]: Array<{ word: string }>;
