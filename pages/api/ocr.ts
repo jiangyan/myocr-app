@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import axios from 'axios'
-import { IncomingForm, File } from 'formidable'
+import { IncomingForm } from 'formidable'
 import fs from 'fs/promises'
 
 export const config = {
