@@ -15,7 +15,7 @@ export function OcrResultTable({ data }: OcrResultTableProps) {
     navigator.clipboard.writeText(text).then(() => {
       toast.success(message, {
         duration: 700,
-        position: 'bottom-center',
+        position: 'top-center',
       });
     });
   };

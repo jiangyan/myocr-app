@@ -156,7 +156,7 @@ export function OcrApp() {
   return (
     <div className="container mx-auto p-4" onPaste={handlePaste}>
       <Toaster
-        position="bottom-center"
+        position="top-center"
         toastOptions={{
           duration: 700,
           style: {
