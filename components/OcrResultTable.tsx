@@ -1,6 +1,7 @@
-import React from 'react';
-import { Copy } from 'lucide-react';
+import React, { useState } from 'react';
+import { Copy, ChevronDown, ChevronUp } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
 import toast from 'react-hot-toast';
 
 interface OcrResultTableProps {
@@ -8,6 +9,8 @@ interface OcrResultTableProps {
 }
 
 export function OcrResultTable({ data }: OcrResultTableProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
   const copyToClipboard = (text: string, message: string) => {
     navigator.clipboard.writeText(text).then(() => {
       toast.success(message, {
@@ -29,37 +32,61 @@ export function OcrResultTable({ data }: OcrResultTableProps) {
   };
 
   const hasResults = Object.keys(data).length > 0;
+  const entries = Object.entries(data);
+  const displayedEntries = isExpanded ? entries : entries.slice(0, 2);
 
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Field</TableHead>
-          <TableHead>Value</TableHead>
-          <TableHead className="w-[50px]">
-            <Copy
-              className={`h-4 w-4 ${hasResults ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'}`}
-              onClick={hasResults ? copyAll : undefined}
-              aria-label="Copy All"
-            />
-          </TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {Object.entries(data).map(([key, value]) => (
-          <TableRow key={key}>
-            <TableCell>{key}</TableCell>
-            <TableCell>{value}</TableCell>
-            <TableCell>
+    <div className="relative">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Field</TableHead>
+            <TableHead>Value</TableHead>
+            <TableHead className="w-[50px]">
               <Copy
-                className="h-4 w-4 cursor-pointer"
-                onClick={() => copyRow(key, value)}
-                aria-label={`Copy ${key}`}
+                className={`h-4 w-4 ${hasResults ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'}`}
+                onClick={hasResults ? copyAll : undefined}
+                aria-label="Copy All"
               />
-            </TableCell>
+            </TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {displayedEntries.map(([key, value]) => (
+            <TableRow key={key}>
+              <TableCell>{key}</TableCell>
+              <TableCell>{value}</TableCell>
+              <TableCell>
+                <Copy
+                  className="h-4 w-4 cursor-pointer"
+                  onClick={() => copyRow(key, value)}
+                  aria-label={`Copy ${key}`}
+                />
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      {entries.length > 2 && (
+        <div className="flex justify-center mt-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="flex items-center"
+          >
+            {isExpanded ? (
+              <>
+                <ChevronUp className="mr-2 h-4 w-4" /> Collapse
+              </>
+            ) : (
+              <>
+                <ChevronDown className="mr-2 h-4 w-4" /> Expand
+              </>
+            )}
+          </Button>
+        </div>
+      )}
+    </div>
   );
 }

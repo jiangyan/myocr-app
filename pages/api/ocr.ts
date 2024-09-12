@@ -40,7 +40,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  console.log("OCR API handler called")
+  
   if (req.method === 'POST') {
     const form = new IncomingForm()
 
@@ -51,7 +51,7 @@ export default async function handler(
       }
 
       try {
-        console.log("Received POST request")
+        
         const fileOrFiles = files.image
         const file = Array.isArray(fileOrFiles) ? fileOrFiles[0] : fileOrFiles
         if (!file || !file.filepath) {
@@ -59,14 +59,12 @@ export default async function handler(
         }
         const imageBuffer = await fs.readFile(file.filepath)
         const imageBase64 = imageBuffer.toString('base64')
-        console.log("Image base64 extracted")
-
+        
         const provider = (fields.provider as string[] | string | undefined)?.[0] || '';
         const apiType = (fields.apiType as string[] | string | undefined)?.[0] || '';
 
         if (provider === 'BAIDU') {
           const accessToken = await getBaiduAccessToken()
-          console.log("Baidu access token obtained")
 
           let apiUrl = ''
           if (apiType === 'Financial Notes') {
@@ -85,8 +83,6 @@ export default async function handler(
               }
             }
           )
-
-          console.log("Baidu API response received:", response.data)
           res.status(200).json(response.data)
         } else {
           throw new Error('Unsupported OCR provider')

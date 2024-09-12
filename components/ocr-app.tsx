@@ -120,24 +120,20 @@ export function OcrApp() {
       setProgress(0)
       
       try {
-        console.log(`Processing file: ${file.name}`)
         
         const formData = new FormData()
         formData.append('image', file)
         formData.append('provider', selectedProvider)
         formData.append('apiType', selectedApiType)
         
-        console.log("Calling OCR API...")
         const response = await axios.post('/api/ocr', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
         })
-        console.log("OCR API response received:", response.data)
         
         const convertedResult = convertOCRResult(response.data, selectedProvider, selectedApiType)
-        console.log("Processed OCR result:", convertedResult)
-        
+                
         setResults(prev => [...prev, { fileName: file.name, text: convertedResult }])
         setProgress(100)
       } catch (error) {
