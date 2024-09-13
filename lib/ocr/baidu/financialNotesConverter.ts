@@ -14,12 +14,12 @@ interface ConvertedFinancialNotesResult {
 
 export function convertFinancialNotes(baiduResult: BaiduFinancialNotesResult): ConvertedFinancialNotesResult {
   const firstResult = baiduResult.words_result[0];
-  if (!firstResult || firstResult.type !== "air_ticket") {
+  if (!firstResult) {
     return { type: "unknown" };
   }
 
   const converted: ConvertedFinancialNotesResult = {
-    type: "air_ticket"
+    type: firstResult.type // Use the actual type from the API response
   };
 
   for (const [key, value] of Object.entries(firstResult.result)) {

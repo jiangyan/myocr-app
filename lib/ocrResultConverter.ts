@@ -14,12 +14,12 @@ interface ConvertedOCRResult {
 
 export function convertOCRResult(baiduResult: BaiduOCRResult): ConvertedOCRResult {
   const firstResult = baiduResult.words_result[0];
-  if (!firstResult || firstResult.type !== "air_ticket") {
+  if (!firstResult) {
     return { type: "unknown" };
   }
 
   const converted: ConvertedOCRResult = {
-    type: "air_ticket"
+    type: firstResult.type
   };
 
   for (const [key, value] of Object.entries(firstResult.result)) {

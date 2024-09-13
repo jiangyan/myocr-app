@@ -14,6 +14,7 @@ export function convertOCRResult(result: OCRResult, provider: string, apiType: s
     if (apiType === 'Financial Notes') {
       return convertFinancialNotes(result as BaiduFinancialNotesResult);
     }
+    // ... handle other types
   }
   return { type: 'unknown' };
 }

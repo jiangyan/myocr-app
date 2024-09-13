@@ -29,7 +29,10 @@ interface FileWithPreview extends File {
 
 interface OCRResult {
   fileName: string
-  text: ReturnType<typeof convertOCRResult>
+  text: {
+    type: string;
+    [key: string]: string;
+  }
 }
 
 interface OCRProvider {
@@ -281,8 +284,8 @@ export function OcrApp() {
                   </div>
                 </TableCell>
                 <TableCell>
-                  {result.text.type === 'air_ticket' ? (
-                    <OcrResultTable data={result.text as Record<string, string> || {}} />
+                  {result.text.type ? (
+                    <OcrResultTable data={result.text as Record<string, string>} />
                   ) : (
                     <pre className="whitespace-pre-wrap text-xs">
                       {JSON.stringify(result.text, null, 2)}

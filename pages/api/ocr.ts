@@ -11,10 +11,15 @@ export const config = {
 
 const BAIDU_AK = process.env.BAIDU_AK
 const BAIDU_SK = process.env.BAIDU_SK
+let BAIDU_ACCESS_TOKEN = process.env.BAIDU_ACCESS_TOKEN
 
 async function getBaiduAccessToken() {
   if (!BAIDU_AK || !BAIDU_SK) {
     throw new Error('Baidu API credentials are not set')
+  }
+
+  if (BAIDU_ACCESS_TOKEN) {
+    return BAIDU_ACCESS_TOKEN
   }
 
   try {
@@ -29,7 +34,8 @@ async function getBaiduAccessToken() {
         },
       }
     )
-    return response.data.access_token
+    BAIDU_ACCESS_TOKEN = response.data.access_token
+    return BAIDU_ACCESS_TOKEN
   } catch (error) {
     console.error('Error getting Baidu access token:', error)
     throw error
