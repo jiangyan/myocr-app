@@ -22,6 +22,7 @@ import { OcrResultTable } from './OcrResultTable';
 import { ImageModal } from './ImageModal';
 import { Toaster } from 'react-hot-toast';
 import toast from 'react-hot-toast';
+import { LoadingTextAnimationComponent } from './loading-text-animation';
 
 interface FileWithPreview extends File {
   preview: string
@@ -251,7 +252,11 @@ export function OcrApp() {
           <h2 className="text-xl font-semibold mb-2">Extraction Progress</h2>
           <div className="flex items-center mb-2">
             <Loader2 className="animate-spin mr-2" />
-            <p>{currentFile.index + 1} / {files.length} {currentFile.name} is extracting...</p>
+            <div className="flex-grow overflow-hidden">
+              <LoadingTextAnimationComponent
+                text={`${currentFile.index + 1} / ${files.length} ${currentFile.name} is processing`}
+              />
+            </div>
           </div>
           <Progress value={progress} className="w-full" />
         </div>
